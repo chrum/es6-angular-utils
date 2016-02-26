@@ -1,0 +1,23 @@
+{
+  "name": "es6-angular-utils",
+  "version": "0.0.1",
+  "description": "Set of tools that I use in my es6-angular adventure",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrum/es6-angular-utils.git"
+  },
+  "keywords": [
+    "es6",
+    "es2015",
+    "angular",
+    "js",
+    "javascript"
+  ],
+  "author": "Chrystian Ruminowicz",
+  "email": "chrystianr@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chrum/es6-angular-utils/issues"
+  },
+  "homepage": "https://github.com/chrum/es6-angular-utils#readme"
+}
