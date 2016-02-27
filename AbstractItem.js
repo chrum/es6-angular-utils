@@ -10,6 +10,11 @@ function initServices($injector) {
 
 export default class AbstractItem {
     constructor(data, endpoint, $injector) {
+        this.status = {
+            q: null, // stores promise when details are being loaded
+            loaded: false,
+            saved: false
+        };
         this._setId(data.id);
         this.endpoint = endpoint;
 
@@ -18,10 +23,6 @@ export default class AbstractItem {
 
         initServices($injector);
 
-        this.status = {
-            q: null, // stores promise when details are being loaded
-            loaded: false
-        };
 
         if (!this._checkData()) {
 
@@ -31,9 +32,11 @@ export default class AbstractItem {
     _setId(id) {
         if (this.isNew(id)) {
             this.id = id;
+            this.status.saved = false;
 
         } else {
             this.id = parseInt(id, 10);
+            this.status.saved = true;
         }
     }
 

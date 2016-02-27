@@ -129,14 +129,18 @@ export default class AbstractItemsService {
     loadItems() {
         this.status.q = api.get(this.endpoint);
         this.status.q.then((response) => {
-            for (let data of response) {
-                this.addItem(data);
-            }
+            this.populateData(response);
 
             return response;
         });
 
         return this.status.q;
+    }
+
+    populateData(data) {
+        for (let item of data) {
+            this.addItem(item);
+        }
     }
 
     whenItemsLoaded(callback) {
