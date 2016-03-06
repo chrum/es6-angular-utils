@@ -126,8 +126,8 @@ export default class AbstractItemsService {
         return p && typeof(p.then) !== 'undefined' && p.$$state.status === 0;
     }
 
-    loadItems() {
-        this.status.q = api.get(this.endpoint);
+    loadItems(params = {}) {
+        this.status.q = api.get(this.endpoint, params);
         this.status.q.then((response) => {
             this.populateData(response);
 
