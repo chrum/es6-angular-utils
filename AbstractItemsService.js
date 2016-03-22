@@ -93,15 +93,21 @@ export default class AbstractItemsService {
         } else {
             item = new this.ItemObject(data, $injector);
             this.data.push(item);
-
-            // Lets add a callback that, on item self-destruct, will remove it from this collection
-            item.onDelete = (itemId) => {
-                this.removeItem(itemId);
-            };
-
+            this._addItemCallbacks(item);
         }
 
         return item;
+    }
+
+    _addItemCallbacks(item) {
+        item.afterDelete = (itemId) => {
+            Object.getPrototypeOf(item).afterDelete.call(item);
+            this.removeItem(itemId);
+        };
+        item.onSaveSuccess = (response) => {
+            Object.getPrototypeOf(item).onSaveSuccess.call(item, response);
+            this.onItemSaved();
+        }
     }
 
     removeItem(id) {
@@ -137,6 +143,18 @@ export default class AbstractItemsService {
         return this.status.q;
     }
 
+    afterItemsLoaded(callback) {
+        if (this.isLoading()) {
+            this.status.q.then((response) => {
+                callback();
+                return response;
+
+            });
+        } else {
+            callback();
+        }
+    }
+
     populateData(data) {
         for (let item of data) {
             this.addItem(item);
@@ -155,9 +173,11 @@ export default class AbstractItemsService {
     createNew(dataObject) {
         dataObject.id = this.idGen.next().value;
         let newItem = new this.ItemObject(dataObject, $injector);
+        this._addItemCallbacks(newItem);
 
         return newItem;
     }
 
     afterItemRemoved(removedItemId) { }
+    onItemSaved(savedItemId) { }
 }

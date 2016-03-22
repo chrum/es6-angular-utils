@@ -59,9 +59,9 @@ export default class AbstractItem {
         if (this.isNew()) {
             this.status.q = api.post(this.endpoint, {}, toSend, onSuccess, onFail)
                 .then((r) => {
-                    this._onSaveSuccess(r);
-                    this._setId(this.data.id);
                     this.afterCreate(r);
+                    this.onSaveSuccess(r);
+                    this._setId(this.data.id);
                     return r;
                 })
                 .catch((r, code) => {
@@ -72,7 +72,7 @@ export default class AbstractItem {
         } else {
             this.status.q = api.put(this.endpoint + '/' + this.id, {}, toSend, onSuccess, onFail)
                 .then((r) => {
-                    this._onSaveSuccess(r);
+                    this.onSaveSuccess(r);
                     this.afterSave(r);
                     return r;
                 })
@@ -85,7 +85,7 @@ export default class AbstractItem {
         return this.status.q;
     }
 
-    _onSaveSuccess(response) {
+    onSaveSuccess(response) {
         this.setData(response, true);
         this.status.loaded = true;
     }
@@ -187,7 +187,7 @@ export default class AbstractItem {
         if (!locally) {
             return api.delete(this.endpoint + '/' + this.id, urlParams)
                 .then((response) => {
-                    this.onDelete(this.id);
+                    this.afterDelete(this.id);
                     return response;
                 });
         }
@@ -207,5 +207,5 @@ export default class AbstractItem {
             this.onDelete();
         }
     }
-    onDelete(itemId) { }
+    afterDelete(itemId) { }
 }
