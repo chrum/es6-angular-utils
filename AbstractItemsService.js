@@ -106,7 +106,7 @@ export default class AbstractItemsService {
         };
         item.onSaveSuccess = (response) => {
             Object.getPrototypeOf(item).onSaveSuccess.call(item, response);
-            this.onItemSaved();
+            this.onItemSaved(item.data.id);
         }
     }
 
