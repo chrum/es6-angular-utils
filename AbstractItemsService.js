@@ -106,7 +106,7 @@ export default class AbstractItemsService {
         };
         item.onSaveSuccess = (response) => {
             Object.getPrototypeOf(item).onSaveSuccess.call(item, response);
-            this.onItemSaved(item.data.id);
+            this.onItemSaved(item);
         }
     }
 
@@ -179,5 +179,5 @@ export default class AbstractItemsService {
     }
 
     afterItemRemoved(removedItemId) { }
-    onItemSaved(savedItemId) { }
+    onItemSaved(savedItem) { }
 }
