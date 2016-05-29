@@ -16,6 +16,7 @@ export default class AbstractItemsService {
         $injector = _$injector;
         initServices($injector);
 
+        this.localStorageName = null;
         this.ItemObject = null;
         this.endpoint = endpoint;
         this.status = {
@@ -176,6 +177,12 @@ export default class AbstractItemsService {
         this._addItemCallbacks(newItem);
 
         return newItem;
+    }
+
+    clearLocalStorage() {
+        if (this.localStorageName) {
+            localStorage.removeItem(this.localStorageName);
+        }
     }
 
     afterItemRemoved(removedItemId) { }
